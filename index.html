@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUNE — Japanese Restaurant Toronto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --charcoal: #1a1a1a;
+    --offwhite: #f8f4ef;
+    --stone: #e8e2d9;
+    --crimson: #b02d20;
+    --gold: #c9954a;
+    --muted: #7a7068;
+    --dark-surface: #111111;
+    --nav-h: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--offwhite);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    background: rgba(17,17,17,0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: background 0.3s;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem; font-weight: 400; letter-spacing: 0.25em;
+    color: var(--offwhite); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--crimson); }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.72);
+    text-decoration: none; padding: 0.3rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: #fff; border-bottom-color: var(--crimson);
+  }
+
+  /* dropdown */
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-menu {
+    display: none; position: absolute; top: 100%; left: 50%;
+    transform: translateX(-50%); background: #111; min-width: 140px;
+    border: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a {
+    display: block; padding: 0.6rem 1.2rem; letter-spacing: 0.12em;
+    border-bottom: none;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 1.5px; background: #fff;
+    transition: 0.3s;
+  }
+  .mobile-menu {
+    display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+    background: #111; z-index: 99; padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; padding: 0.9rem 2rem;
+    font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.8); text-decoration: none; cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .mobile-menu a:hover { color: #fff; }
+
+  /* ─── PAGES ─── */
+  .page { display: none; padding-top: var(--nav-h); min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ─── HOME HERO ─── */
+  .hero {
+    position: relative; height: calc(100vh - var(--nav-h));
+    background: var(--dark-surface);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Wave SVG background */
+  .hero-waves {
+    position: absolute; inset: 0; opacity: 0.18;
+  }
+  .hero-waves svg { width: 100%; height: 100%; }
+
+  /* Subtle grid overlay */
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(176,45,32,0.18) 0%, transparent 55%),
+                      radial-gradient(circle at 80% 30%, rgba(201,149,74,0.10) 0%, transparent 50%);
+  }
+
+  .hero-content {
+    position: relative; z-index: 2; text-align: center;
+    padding: 2rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem; font-weight: 400;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(5rem, 14vw, 11rem);
+    font-weight: 300; letter-spacing: 0.18em;
+    color: var(--offwhite); line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.95rem, 2.5vw, 1.3rem);
+    letter-spacing: 0.35em; color: rgba(255,255,255,0.45);
+    text-transform: uppercase; margin-bottom: 2.8rem; font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    display: inline-block; padding: 0.85rem 2.2rem;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; text-decoration: none; transition: 0.25s;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--crimson); color: #fff;
+  }
+  .btn-primary:hover { background: #8e2419; }
+  .btn-outline {
+    background: transparent; color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .btn-outline:hover { border-color: #fff; color: #fff; }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(255,255,255,0.35); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+    animation: scrollDrop 1.6s ease-in-out infinite;
+  }
+  @keyframes scrollDrop {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    50% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+  }
+
+  /* ─── HOME STRIPS ─── */
+  .strip {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 420px;
+  }
+  .strip-text {
+    padding: 5rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .strip-image {
+    background-size: cover; background-position: center;
+    min-height: 340px;
+  }
+  .strip.dark-strip { background: var(--charcoal); }
+  .strip.dark-strip .strip-text { color: var(--offwhite); }
+
+  .eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem; font-weight: 400;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400; line-height: 1.15; margin-bottom: 1.2rem;
+  }
+  .section-body {
+    font-size: 0.92rem; line-height: 1.8; color: var(--muted);
+    max-width: 480px;
+  }
+  .strip.dark-strip .section-body { color: rgba(255,255,255,0.55); }
+  .section-body + .btn { margin-top: 2rem; }
+
+  /* 3-col features */
+  .features {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--stone);
+  }
+  .feature {
+    padding: 3.5rem 2.8rem;
+    border-right: 1px solid rgba(0,0,0,0.08);
+  }
+  .feature:last-child { border-right: none; }
+  .feature-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; color: rgba(0,0,0,0.08); line-height: 1;
+    margin-bottom: 0.8rem; font-weight: 300;
+  }
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 500; margin-bottom: 0.7rem;
+  }
+  .feature-text { font-size: 0.88rem; line-height: 1.75; color: var(--muted); }
+
+  /* ─── ABOUT PAGE ─── */
+  .page-hero {
+    background: var(--charcoal); padding: 6rem 3rem 5rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(176,45,32,0.15) 0%, transparent 70%);
+  }
+  .page-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 6rem); font-weight: 300;
+    color: var(--offwhite); letter-spacing: 0.2em; position: relative;
+  }
+  .page-hero-sub {
+    font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-top: 0.8rem; position: relative;
+  }
+
+  .about-content {
+    max-width: 820px; margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .about-lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400; line-height: 1.5; color: var(--charcoal);
+    margin-bottom: 2.5rem;
+  }
+  .about-body { font-size: 0.95rem; line-height: 1.9; color: var(--muted); }
+  .about-body p { margin-bottom: 1.5rem; }
+
+  .about-pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--stone); margin-top: 3rem;
+  }
+  .pillar {
+    background: var(--offwhite); padding: 2.5rem 2rem; text-align: center;
+  }
+  .pillar-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .pillar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; margin-bottom: 0.5rem;
+  }
+  .pillar-text { font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
+  /* ─── ENVIRONMENT PAGE ─── */
+  .env-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--stone);
+  }
+  .env-card {
+    background: var(--offwhite); padding: 3.5rem 3rem;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 360px;
+    background-size: cover; background-position: center; position: relative;
+  }
+  .env-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(17,17,17,0.75) 0%, transparent 55%);
+  }
+  .env-card-text { position: relative; z-index: 1; color: #fff; }
+  .env-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 400; margin-bottom: 0.4rem;
+  }
+  .env-card-desc { font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .env-text-section {
+    max-width: 820px; margin: 0 auto; padding: 5rem 2rem;
+    text-align: center;
+  }
+  .env-text-section .section-title { margin-bottom: 1.5rem; }
+  .env-text-section .section-body { margin: 0 auto; text-align: center; }
+
+  /* ─── MENU PAGE ─── */
+  .menu-tabs {
+    display: flex; border-bottom: 1px solid var(--stone);
+    background: #fff; position: sticky; top: var(--nav-h); z-index: 50;
+  }
+  .menu-tab {
+    flex: 1; padding: 1.1rem; text-align: center;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; color: var(--muted);
+    border-bottom: 2px solid transparent; transition: 0.2s;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .menu-tab.active { color: var(--charcoal); border-bottom-color: var(--crimson); }
+
+  .menu-panel { display: none; padding: 3rem 2rem 5rem; max-width: 1100px; margin: 0 auto; }
+  .menu-panel.active { display: block; }
+
+  .menu-section-header {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin: 3rem 0 1.8rem;
+  }
+  .menu-section-header::before, .menu-section-header::after {
+    content: ''; flex: 1; height: 1px; background: var(--stone);
+  }
+  .menu-section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400; letter-spacing: 0.08em;
+    white-space: nowrap; color: var(--charcoal);
+  }
+
+  .menu-note {
+    font-size: 0.78rem; color: var(--muted); text-align: center;
+    margin-bottom: 2rem; line-height: 1.6; font-style: italic;
+  }
+
+  .menu-items {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px;
+    background: var(--stone);
+  }
+  .menu-item {
+    background: var(--offwhite); padding: 1.3rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 1rem;
+  }
+  .menu-item:hover { background: #fff; }
+  .item-info { flex: 1; }
+  .item-name {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 0.3rem; color: var(--charcoal);
+  }
+  .item-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+  .item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--crimson); white-space: nowrap; font-weight: 500;
+  }
+
+  /* Wide single-col menu items (for nigiri lists) */
+  .menu-items-compact {
+    columns: 2; gap: 1px; background: var(--stone);
+  }
+  .menu-item-compact {
+    background: var(--offwhite); padding: 0.8rem 1.2rem;
+    display: flex; justify-content: space-between; break-inside: avoid;
+    margin-bottom: 1px;
+  }
+  .mic-name { font-size: 0.8rem; font-weight: 500; color: var(--charcoal); }
+  .mic-jp { font-size: 0.72rem; color: var(--muted); margin-left: 0.4rem; }
+  .mic-price { font-size: 0.9rem; color: var(--crimson); font-family: 'Cormorant Garamond', serif; }
+
+  /* Nabemono callout */
+  .menu-callout {
+    background: var(--charcoal); color: var(--offwhite);
+    padding: 2.5rem 3rem; margin: 2.5rem 0;
+    display: flex; gap: 3rem; align-items: center;
+  }
+  .callout-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300; letter-spacing: 0.1em;
+    white-space: nowrap; color: var(--gold);
+  }
+  .callout-desc { font-size: 0.88rem; line-height: 1.75; color: rgba(255,255,255,0.65); }
+  .callout-price { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 0.5rem; text-transform: uppercase; }
+
+  /* ─── LOCATION PAGE ─── */
+  .location-grid {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - var(--nav-h));
+  }
+  .location-info {
+    padding: 5rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .location-map { background: var(--stone); }
+  .location-map iframe { width: 100%; height: 100%; min-height: 500px; border: none; display: block; }
+
+  .location-address {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 400; line-height: 1.4;
+    margin-bottom: 2.5rem;
+  }
+  .location-phone { font-size: 1.1rem; color: var(--muted); margin-bottom: 3rem; }
+  .location-phone a { color: var(--crimson); text-decoration: none; }
+
+  .hours-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; }
+  .hours-table th {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); text-align: left; padding: 0.6rem 0;
+    border-bottom: 1px solid var(--stone); font-weight: 500;
+  }
+  .hours-table td {
+    padding: 0.75rem 0; font-size: 0.88rem; color: var(--charcoal);
+    border-bottom: 1px solid var(--stone);
+    vertical-align: top;
+  }
+  .hours-table td:last-child { text-align: right; color: var(--muted); }
+
+  .payment-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.6rem; font-weight: 500;
+  }
+  .payment-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .badge {
+    font-size: 0.72rem; padding: 0.3rem 0.75rem;
+    border: 1px solid var(--stone); color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--charcoal); color: rgba(255,255,255,0.45);
+    padding: 3rem; text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; letter-spacing: 0.25em; color: var(--offwhite);
+    margin-bottom: 0.5rem;
+  }
+  .footer-logo span { color: var(--crimson); }
+  .footer-tagline { font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 2rem; }
+  .footer-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.15); margin: 1.5rem auto; }
+  .footer-text { font-size: 0.78rem; line-height: 2; }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .strip { grid-template-columns: 1fr; }
+    .strip-image { min-height: 240px; }
+    .strip-text { padding: 3rem 1.5rem; }
+    .strip.dark-strip .strip-text { padding: 3rem 1.5rem; }
+
+    .features { grid-template-columns: 1fr; }
+    .feature { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); }
+
+    .about-pillars { grid-template-columns: 1fr; }
+    .env-grid { grid-template-columns: 1fr; }
+
+    .menu-items-compact { columns: 1; }
+
+    .location-grid { grid-template-columns: 1fr; }
+    .location-info { padding: 3rem 1.5rem; order: 2; }
+    .location-map { order: 1; }
+    .location-map iframe { min-height: 300px; }
+
+    .menu-callout { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+
+    .page-hero { padding: 4rem 1.5rem 3rem; }
+    .about-content { padding: 3rem 1.5rem; }
+    .env-text-section { padding: 3rem 1.5rem; }
+    .menu-panel { padding: 2rem 1rem 4rem; }
+    .location-address { font-size: 1.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-line { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')"><span>F</span>UNE</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">About Us</a></li>
+    <li><a onclick="showPage('environment')" id="nav-environment">Environment</a></li>
+    <li class="nav-dropdown">
+      <a id="nav-menu">Menu ▾</a>
+      <div class="nav-dropdown-menu">
+        <a onclick="showPage('menu'); switchMenuTab('lunch')">Lunch</a>
+        <a onclick="showPage('menu'); switchMenuTab('dinner')">Dinner</a>
+      </div>
+    </li>
+    <li><a onclick="showPage('location')" id="nav-location">Location</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home');closeMobile()">Home</a>
+  <a onclick="showPage('about');closeMobile()">About Us</a>
+  <a onclick="showPage('environment');closeMobile()">Environment</a>
+  <a onclick="showPage('menu');switchMenuTab('lunch');closeMobile()">Menu — Lunch</a>
+  <a onclick="showPage('menu');switchMenuTab('dinner');closeMobile()">Menu — Dinner</a>
+  <a onclick="showPage('location');closeMobile()">Location</a>
+</div>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-waves">
+      <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            .wave { fill: none; stroke: rgba(255,255,255,0.3); stroke-width: 1; }
+            @keyframes waveMove { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+            .wg1 { animation: waveMove 18s linear infinite; }
+            .wg2 { animation: waveMove 28s linear infinite reverse; }
+          </style>
+        </defs>
+        <g class="wg1">
+          <path class="wave" d="M0,400 C180,340 360,460 540,400 C720,340 900,460 1080,400 C1260,340 1440,460 1620,400 C1800,340 1980,460 2160,400"/>
+          <path class="wave" d="M0,450 C180,390 360,510 540,450 C720,390 900,510 1080,450 C1260,390 1440,510 1620,450 C1800,390 1980,510 2160,450" style="stroke-width:0.5"/>
+          <path class="wave" d="M0,350 C180,290 360,410 540,350 C720,290 900,410 1080,350 C1260,290 1440,410 1620,350" style="stroke-width:0.7"/>
+        </g>
+        <g class="wg2">
+          <path class="wave" d="M0,300 C180,240 360,360 540,300 C720,240 900,360 1080,300 C1260,240 1440,360 1620,300 C1800,240 1980,360 2160,300" style="stroke-width:0.5"/>
+          <path class="wave" d="M0,500 C180,440 360,560 540,500 C720,440 900,560 1080,500 C1260,440 1440,560 1620,500" style="stroke-width:0.8"/>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Est. Toronto · Revolving Sushi Bar</p>
+      <h1 class="hero-title">FUNE</h1>
+      <p class="hero-sub">Japanese Restaurant</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showPage('menu');switchMenuTab('lunch')">View Menu</button>
+        <button class="btn btn-outline" onclick="showPage('location')">Find Us</button>
+      </div>
+    </div>
+    <div class="scroll-cue">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- Strip 1 -->
+  <section class="strip dark-strip">
+    <div class="strip-text">
+      <p class="eyebrow">Our Story</p>
+      <h2 class="section-title" style="color:var(--offwhite)">Crafted with Heart,<br>Served with Skill</h2>
+      <p class="section-body">Located in the heart of Toronto's theatre district, Fune has been a celebrated destination for Japanese cuisine since the nineties. We are committed to creating exquisite Japanese delicacies — our sushi is meticulously executed, supremely fresh, and punctuated with welcome surprises.</p>
+      <button class="btn btn-outline" onclick="showPage('about')" style="margin-top:2rem">Our Story</button>
+    </div>
+    <div class="strip-image" style="background-image:url('https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=900&q=80')"></div>
+  </section>
+
+  <!-- 3 features -->
+  <section class="features">
+    <div class="feature">
+      <div class="feature-num">01</div>
+      <h3 class="feature-title">Revolving Sushi Bar</h3>
+      <p class="feature-text">An immersive dining experience where fresh, handcrafted pieces glide by — choose what delights you, at your own pace.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">02</div>
+      <h3 class="feature-title">Supremely Fresh</h3>
+      <p class="feature-text">From Atlantic salmon to prized bluefin toro, every piece of seafood is selected for quality and prepared the same day.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">03</div>
+      <h3 class="feature-title">Theatre District</h3>
+      <p class="feature-text">Steps from Roy Thomson Hall and TIFF Bell Lightbox — the perfect setting for a pre-show dinner or a special occasion.</p>
+    </div>
+  </section>
+
+  <!-- Strip 2 -->
+  <section class="strip">
+    <div class="strip-image" style="background-image:url('https://images.unsplash.com/photo-1553621042-f6e147245754?w=900&q=80')"></div>
+    <div class="strip-text">
+      <p class="eyebrow">The Menu</p>
+      <h2 class="section-title">Traditional &amp; Neo-Modern Japanese</h2>
+      <p class="section-body">From delicate nigiri and sashimi to char-broiled teriyaki, hot pot Nabemono, and udon noodle soups — our kitchen spans the full range of Japanese culinary tradition.</p>
+      <button class="btn btn-primary" onclick="showPage('menu');switchMenuTab('dinner')" style="margin-top:2rem">Explore Dinner</button>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════ ABOUT PAGE ══════════════ -->
+<div class="page" id="page-about">
+  <div class="page-hero">
+    <h1 class="page-hero-title">About Us</h1>
+    <p class="page-hero-sub">Japanese Restaurant · Toronto Theatre District</p>
+  </div>
+
+  <div class="about-content">
+    <p class="about-lead">Located in the heart of Toronto's theatre district, Fune has been operating since the nineties — a quiet institution built on craft and consistency.</p>
+    <div class="about-body">
+      <p>We are committed to creating exquisite Japanese delicacies. Our assortment of sushi is meticulously executed, supremely fresh, and punctuated with welcome surprises that keep guests returning season after season.</p>
+      <p>Whether you prefer the classical elegance of traditional Japanese cuisine or the bold expression of neo-modern dishes, every plate is prepared with our heart and skills — to satisfy your love of quality Japanese food.</p>
+      <p>Our revolving sushi bar is a beloved centrepiece: a living procession of handcrafted pieces that invites discovery, conversation, and the pleasure of eating at your own pace.</p>
+    </div>
+
+    <div class="about-pillars">
+      <div class="pillar">
+        <div class="pillar-icon">🎋</div>
+        <h3 class="pillar-title">Tradition</h3>
+        <p class="pillar-text">Rooted in classical Japanese technique, refined over decades of practice in the heart of Toronto.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🐟</div>
+        <h3 class="pillar-title">Freshness</h3>
+        <p class="pillar-text">Every piece of fish and seafood is selected daily for peak quality — no exceptions, no shortcuts.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🏮</div>
+        <h3 class="pillar-title">Atmosphere</h3>
+        <p class="pillar-text">A warm, distinctive environment designed for lingering over good food and good company.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ENVIRONMENT PAGE ══════════════ -->
+<div class="page" id="page-environment">
+  <div class="page-hero">
+    <h1 class="page-hero-title">Environment</h1>
+    <p class="page-hero-sub">A Space Designed for the Senses</p>
+  </div>
+
+  <div class="env-text-section">
+    <p class="eyebrow" style="text-align:center">The Atmosphere</p>
+    <h2 class="section-title">Where Every Detail<br>Is Considered</h2>
+    <p class="section-body">The environment at Fune is as carefully composed as the food. Warm tones, natural materials, and thoughtful lighting create a space that is both intimate and lively — the perfect backdrop for exceptional Japanese cuisine.</p>
+  </div>
+
+  <div class="env-grid">
+    <div class="env-card" style="background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80')">
+      <div class="env-card-overlay"></div>
+      <div class="env-card-text">
+        <h3 class="env-card-title">The Revolving Bar</h3>
+        <p class="env-card-desc">The heart of Fune — a continuous procession of handcrafted sushi, gliding past at a gentle pace.</p>
+      </div>
+    </div>
+    <div class="env-card" style="background-image:url('https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80')">
+      <div class="env-card-overlay"></div>
+      <div class="env-card-text">
+        <h3 class="env-card-title">Dining Room</h3>
+        <p class="env-card-desc">Warm, thoughtfully lit tables for intimate dinners, celebrations, and pre-show gatherings.</p>
+      </div>
+    </div>
+    <div class="env-card" style="background-image:url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80')">
+      <div class="env-card-overlay"></div>
+      <div class="env-card-text">
+        <h3 class="env-card-title">The Kitchen</h3>
+        <p class="env-card-desc">Where tradition meets precision — our chefs craft every dish with skill honed over many years.</p>
+      </div>
+    </div>
+    <div class="env-card" style="background-image:url('https://images.unsplash.com/photo-1560624052-449f5ddf0c31?w=800&q=80')">
+      <div class="env-card-overlay"></div>
+      <div class="env-card-text">
+        <h3 class="env-card-title">Theatre District</h3>
+        <p class="env-card-desc">Steps from Toronto's finest cultural venues — the ideal dinner before or after a performance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MENU PAGE ══════════════ -->
+<div class="page" id="page-menu">
+  <div class="page-hero" style="padding:4rem 3rem 3rem">
+    <h1 class="page-hero-title">Menu</h1>
+    <p class="page-hero-sub">Lunch &amp; Dinner · Toronto</p>
+  </div>
+
+  <div class="menu-tabs">
+    <button class="menu-tab active" id="tab-lunch" onclick="switchMenuTab('lunch')">Lunch</button>
+    <button class="menu-tab" id="tab-dinner" onclick="switchMenuTab('dinner')">Dinner</button>
+  </div>
+
+  <!-- ── LUNCH PANEL ── -->
+  <div class="menu-panel active" id="panel-lunch">
+
+    <div class="menu-section-header"><span class="menu-section-label">Appetizers</span></div>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Miso Soup</div><div class="item-desc">Soya bean soup with tofu, seaweed &amp; green onion</div></div><div class="item-price">$3</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salad</div><div class="item-desc">Green salad with house dressing</div></div><div class="item-price">$3</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kaiso Salad</div><div class="item-desc">Seaweed salad with house sesame dressing</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kani Salad</div><div class="item-desc">Surimi crab leg, cucumber &amp; fish with spicy mayo</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Edamame</div><div class="item-desc">Boiled soya beans topped with salt</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Age Gyoza</div><div class="item-desc">Deep-fried beef dumpling</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Yasai Tempura</div><div class="item-desc">Assorted vegetables deep-fried in lite Japanese batter</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura</div><div class="item-desc">Shrimps &amp; assorted vegetables deep-fried in lite Japanese batter</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Yakitori</div><div class="item-desc">Skewered chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Kushiyaki</div><div class="item-desc">Skewered beef tenderloin glazed with teriyaki sauce</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Sampler</div><div class="item-desc">Chef's choice of five kinds of nigiri</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sashimi Sampler</div><div class="item-desc">Chef's choice of assorted fresh raw seafood</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Pizza</div><div class="item-desc">Marinated crispy rice crust, spicy mayo, fish roe, green onion, spanish onion — tuna or salmon</div></div><div class="item-price">$13</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Lunch Entrées</span></div>
+    <p class="menu-note">All entrées accompanied with miso soup, house salad &amp; steamed rice (except sushi entrées). Also accompanied with sautéed vegetables unless marked *</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chicken Teriyaki</div><div class="item-desc">Char-broiled tender chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$11</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ribeye Teriyaki</div><div class="item-desc">Char-broiled juicy ribeye steak glazed with teriyaki sauce</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sirloin</div><div class="item-desc">Char-broiled New York cut striploin with garlic butter &amp; soya sauce</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salmon</div><div class="item-desc">Char-broiled fresh Atlantic salmon fillet, salted or glazed with teriyaki sauce</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tatsuta Age</div><div class="item-desc">Japanese style deep-fried boneless chicken dark meat</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tonkatsu</div><div class="item-desc">Deep-fried breaded pork cutlet served with tonkatsu sauce</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura *</div><div class="item-desc">Three pieces of large shrimps &amp; assorted vegetables in lite Japanese batter</div></div><div class="item-price">$15</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Vegetable Tempura *</div><div class="item-desc">Deep-fried assorted vegetables in lite Japanese batter</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Shrimp</div><div class="item-desc">Shrimps sautéed with garlic butter &amp; soya sauce</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Scallop</div><div class="item-desc">Deep sea scallops sautéed with garlic butter &amp; soya sauce</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sashimi *</div><div class="item-desc">Chef's choice of assorted fresh raw seafood</div></div><div class="item-price">$18</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chirashi Sushi *</div><div class="item-desc">Assortment of raw fish served on a bed of sushi rice</div></div><div class="item-price">$20</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Matsu</div><div class="item-desc">Tuna, white fish, salmon, hokkigai, surimi crab leg, shrimp with 6 pieces seaweed rolls</div></div><div class="item-price">$16</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Udon &amp; Soba</span></div>
+    <p class="menu-note">All udon &amp; soba served with house salad</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Nabeyaki Udon</div><div class="item-desc">Thick noodle with assorted vegetables, seafood &amp; egg cooked in broth</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle in broth with tempura shrimp</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle with sautéed beef &amp; vegetables in broth</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chicken Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle with grilled chicken dark meat in broth</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tori Tatsuta Udon</div><div class="item-desc">Japanese style deep-fried chicken dark meat with sautéed carrot, bean sprout, spicy black pepper &amp; thick noodle in broth</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Vegetable Udon or Soba</div><div class="item-desc">Assorted sautéed vegetables with thick or buckwheat noodle in broth</div></div><div class="item-price">$11</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sansai Udon or Soba</div><div class="item-desc">Mountain vegetable with thick or buckwheat noodle in broth</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tanuki Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle with green onion &amp; tempura bits in broth</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ten Zaru Soba</div><div class="item-desc">Cold buckwheat noodle with tempura shrimps served with dipping sauce</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Zaru Soba</div><div class="item-desc">Cold buckwheat noodle served with dipping sauce</div></div><div class="item-price">$11</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Donburi</span></div>
+    <p class="menu-note">Donburi served with miso soup &amp; salad</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Oyako-Don</div><div class="item-desc">Chicken dark meat, Spanish onion, shiitake mushroom and egg stewed in sauce, served on rice</div></div><div class="item-price">$15</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Katsu-Don</div><div class="item-desc">Deep-fried breaded pork cutlet, Spanish onion and egg stewed in sauce, served on rice</div></div><div class="item-price">$18</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ten-Don</div><div class="item-desc">Deep-fried tempura shrimps and vegetables dipped in house sauce, served on rice</div></div><div class="item-price">$18</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Una Jyu</div><div class="item-desc">Barbecued eel served on a bed of rice with Japanese pickles</div></div><div class="item-price">$24</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Nigiri Sushi</span></div>
+    <p class="menu-note">2 pieces · All nigiri prepared with wasabi inside · Extra pickled ginger $1 · House Sauce $1</p>
+    <div class="menu-items-compact">
+      <div class="menu-item-compact"><span><span class="mic-name">Sake</span><span class="mic-jp"> — Atlantic salmon</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Maguro</span><span class="mic-jp"> — Tuna</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Toro</span><span class="mic-jp"> — Marbled tuna</span></span><span class="mic-price">Market price</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Bincho</span><span class="mic-jp"> — White tuna</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Hamachi</span><span class="mic-jp"> — Yellowtail</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Saba</span><span class="mic-jp"> — Mackerel</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ebi</span><span class="mic-jp"> — Shrimp</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Amaebi</span><span class="mic-jp"> — Sweet shrimp</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Hotategai</span><span class="mic-jp"> — Scallop</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Hokkigai</span><span class="mic-jp"> — Surf clam</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ika</span><span class="mic-jp"> — Squid</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kanikama</span><span class="mic-jp"> — Surimi crab leg</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Tako</span><span class="mic-jp"> — Octopus</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Unagi</span><span class="mic-jp"> — Fresh water eel</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Spicy Hotategai</span><span class="mic-jp"> — Chopped scallop, fish roe, spicy mayo</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Spicy Tuna</span><span class="mic-jp"> — Chopped tuna, house spicy sesame soy sauce</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Tobiko</span><span class="mic-jp"> — Flying fish roe</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ikura</span><span class="mic-jp"> — Salmon roe</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Uni</span><span class="mic-jp"> — Sea urchin</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Botan Ebi</span><span class="mic-jp"> — Large prawns</span></span><span class="mic-price">$11</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kaki</span><span class="mic-jp"> — Fresh oysters</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Tamago</span><span class="mic-jp"> — Omelette</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kampachi</span><span class="mic-jp"> — Amberjack</span></span><span class="mic-price">$9</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Madai</span><span class="mic-jp"> — Sea bream</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Shima Aji</span><span class="mic-jp"> — Stripe jack</span></span><span class="mic-price">$10</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Suzuki</span><span class="mic-jp"> — Sea bass</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kimmedai</span><span class="mic-jp"> — Golden eye red snapper</span></span><span class="mic-price">$9</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kurodai</span><span class="mic-jp"> — Black porgy</span></span><span class="mic-price">$8</span></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Maki Sushi</span></div>
+    <p class="menu-note">Seaweed roll · Extra pickled ginger $1 · House Sauce $1</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tekka</div><div class="item-desc">Tuna</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kappa</div><div class="item-desc">Cucumber</div></div><div class="item-price">$5</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Avo Q</div><div class="item-desc">Avocado and cucumber</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Futomaki</div><div class="item-desc">Deluxe thick roll</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">California</div><div class="item-desc">Avocado, cucumber, fish roe &amp; surimi crab leg</div></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Tuna</div><div class="item-desc">Tuna, avocado &amp; spicy mayo</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Salmon</div><div class="item-desc">Salmon, avocado &amp; spicy mayo</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Scallop</div><div class="item-desc">Chopped scallop, fish roe, avocado &amp; spicy mayo</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Negi-Hama</div><div class="item-desc">Chopped yellowtail &amp; green onion</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Negi Toro</div><div class="item-desc">Chopped marbled tuna &amp; green onion</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Philadelphia Roll</div><div class="item-desc">Cucumber, Spanish onions and cream cheese topped with smoked salmon</div></div><div class="item-price">$11</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salmon Skin</div><div class="item-desc">Salmon skin, bonito shavings and green onion</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Unakyu</div><div class="item-desc">Barbecued eel &amp; cucumber</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura</div><div class="item-desc">Deep-fried tempura shrimp &amp; avocado</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dynamite Roll</div><div class="item-desc">Shrimp tempura, surimi crab leg, fish roe, cucumber &amp; avocado</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spider Roll</div><div class="item-desc">Soft-shell crab, fish roe, avocado, radish sprout, surimi crab &amp; cucumber</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dragon Roll</div><div class="item-desc">Shrimp tempura, eel &amp; fish roe topped with sliced avocado</div></div><div class="item-price">$19</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Mountain Roll</div><div class="item-desc">Yellowtail tempura &amp; avocado topped with Spanish onion, fish roe and spicy mayo</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rainbow</div><div class="item-desc">Avocado, cucumber, surimi crab leg &amp; fish roe topped with assorted raw fish</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Vegetable Dragon</div><div class="item-desc">Boiled asparagus &amp; carrot tempura topped with sliced avocado</div></div><div class="item-price">$12</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Temaki — Hand Rolls</span></div>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tekka</div><div class="item-desc">Tuna</div></div><div class="item-price">$5</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kappa</div><div class="item-desc">Cucumber</div></div><div class="item-price">$4</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Avocado &amp; Cucumber</div><div class="item-desc">Avocado &amp; cucumber</div></div><div class="item-price">$5</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">California</div><div class="item-desc">Avocado, cucumber, fish roe and surimi crab leg</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Tuna</div><div class="item-desc">Tuna, avocado &amp; spicy mayo</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Salmon</div><div class="item-desc">Salmon, avocado &amp; spicy mayo</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dynamite</div><div class="item-desc">Shrimp tempura, surimi crab leg, fish roe, cucumber &amp; avocado</div></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spider (2 pcs)</div><div class="item-desc">Soft-shell crab, fish roe, avocado, radish sprout, surimi crab &amp; cucumber</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Unakyu</div><div class="item-desc">Barbecued eel &amp; cucumber</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura</div><div class="item-desc">Deep-fried tempura shrimp &amp; avocado</div></div><div class="item-price">$6</div></div>
+    </div>
+  </div><!-- end lunch panel -->
+
+  <!-- ── DINNER PANEL ── -->
+  <div class="menu-panel" id="panel-dinner">
+
+    <div class="menu-section-header"><span class="menu-section-label">Dinner Appetizers</span></div>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Kushiyaki</div><div class="item-desc">Skewered beef tenderloin glazed with teriyaki sauce</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Yakitori</div><div class="item-desc">Skewered chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chicken Teriyaki</div><div class="item-desc">Char-broiled tender chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Atlantic Salmon</div><div class="item-desc">Char-broiled salmon with salt or glazed with teriyaki sauce</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ribeye Teriyaki</div><div class="item-desc">Char-broiled juicy ribeye steak glazed with teriyaki sauce</div></div><div class="item-price">$15</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Pizza</div><div class="item-desc">Crispy rice crust, spicy mayo, fish roe, green onion, Spanish onion — tuna or salmon</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Sampler</div><div class="item-desc">Chef's choice of five kinds of nigiri</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sashimi Sampler</div><div class="item-desc">Chef's choice of assorted fresh raw seafood</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tuna Tataki</div><div class="item-desc">Lightly seared tuna with black pepper, served with ponzu sauce</div></div><div class="item-price">$18</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fresh Oysters</div><div class="item-desc">Three pieces of half shell oysters served with ponzu sauce</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Sashimi</div><div class="item-desc">Thinly sliced New York sirloin, served blue rare with ponzu sauce</div></div><div class="item-price">$19</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Amiyaki</div><div class="item-desc">Tidbits of sirloin cooked on a hibachi at your table</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ebi Amiyaki</div><div class="item-desc">Shrimps cooked on a hibachi at your table</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Soft-Shell Crab</div><div class="item-desc">A delicacy, served with ponzu sauce</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ika Sugata-Yaki</div><div class="item-desc">Char-broiled tender squid marinated with ginger sauce</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ebi</div><div class="item-desc">Gulf shrimps sautéed with garlic butter, soya sauce and sake</div></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Hotategai</div><div class="item-desc">Deep sea scallops sautéed with garlic butter, soya sauce and sake</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Saba Shioyaki</div><div class="item-desc">Char-broiled salted mackerel</div></div><div class="item-price">$11</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Gindara Miso-Zuke</div><div class="item-desc">Broiled black cod, marinated with miso</div></div><div class="item-price">$21</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Hamachi Kama</div><div class="item-desc">Char-broiled yellowtail collar</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Miso Soup</div><div class="item-desc">Soya bean soup with tofu, seaweed &amp; green onion</div></div><div class="item-price">$3</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chawanmushi</div><div class="item-desc">Steamed egg custard with chicken, shrimp, ginko nuts and shiitake mushrooms</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Yu-Dofu</div><div class="item-desc">Boiled tofu with shrimp, fish cake and vegetables cooked in a clay pot</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kaiso Salad</div><div class="item-desc">Seaweed salad with house sesame dressing</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kani Salad</div><div class="item-desc">Surimi crab leg, cucumber &amp; fish</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sunomono</div><div class="item-desc">Harusame, seaweed, cucumber and assorted seafood with vinaigrette</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Edamame</div><div class="item-desc">Boiled soya beans topped with salt</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ohitashi</div><div class="item-desc">Rolled blanched spinach with house sesame sauce</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tsukemono</div><div class="item-desc">Assortment of Japanese style pickles</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Urajiro</div><div class="item-desc">Deep-fried fresh shiitake mushroom stuffed with minced shrimp &amp; green onion</div></div><div class="item-price">$10</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Enoki Batayaki</div><div class="item-desc">Enoki mushrooms poached with garlic butter and sake</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Age Dashi Dofu</div><div class="item-desc">Deep-fried tofu served with bonito shaving and house sauce</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Age Gyoza</div><div class="item-desc">Deep-fried beef dumpling</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Torikaraage</div><div class="item-desc">Japanese style deep-fried chicken dark meat</div></div><div class="item-price">$10</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Funé Specialties</span></div>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi Moriawase</div><div class="item-desc">Deluxe assorted nigiri sushi, California roll and tuna roll</div></div><div class="item-price">$66</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sashimi Moriawase</div><div class="item-desc">Deluxe assorted raw seafood</div></div><div class="item-price">$66</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Funé Moriawase</div><div class="item-desc">Assorted raw seafood, nigiri sushi and California roll</div></div><div class="item-price">$66</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kobe Style Beef Dinner</div><div class="item-desc">Japanese beef seared with soya sauce. With miso soup, salad, sautéed vegetables and steamed rice</div></div><div class="item-price">Market price</div></div>
+    </div>
+
+    <div class="menu-callout">
+      <div>
+        <div class="callout-price">$35 per person · Minimum 2 orders</div>
+        <div class="callout-label">Nabemono</div>
+      </div>
+      <div class="callout-desc">
+        Hot pot dishes cooked at your table, accompanied with steamed rice.<br><br>
+        <strong style="color:#fff">Shabu Shabu</strong> — Thinly sliced prime ribeye beef and assorted fresh vegetables cooked in a clear seaweed broth, served with ponzu and sesame seed dipping sauce.<br><br>
+        <strong style="color:#fff">Sukiyaki</strong> — Thinly sliced prime ribeye beef and assorted fresh vegetables cooked in an iron pot with house special sauce.
+      </div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Dinner Entrées</span></div>
+    <p class="menu-note">Served with miso soup, salad, sautéed vegetables and steamed rice (unless noted)</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sashimi</div><div class="item-desc">Chef's choice of assorted fresh raw seafood. With miso soup, salad and steamed rice</div></div><div class="item-price">$32</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sushi</div><div class="item-desc">Chef's choice of eight kinds of nigiri sushi and California roll</div></div><div class="item-price">$29</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chirashi Sushi</div><div class="item-desc">Assortment of raw seafood served on sushi rice, with miso soup and salad</div></div><div class="item-price">$25</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura</div><div class="item-desc">Six pieces of shrimps and assorted vegetables deep-fried in lite Japanese batter</div></div><div class="item-price">$27</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Nihon-Kai</div><div class="item-desc">Grilled salmon with salt or teriyaki, with shrimps and assorted fresh vegetables deep-fried in lite Japanese batter</div></div><div class="item-price">$29</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chicken Teriyaki</div><div class="item-desc">Char-broiled tender chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$22</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rib-Eye Steak</div><div class="item-desc">Char-broiled juicy ribeye steak with teriyaki sauce</div></div><div class="item-price">$35</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Teriyaki</div><div class="item-desc">Char-broiled ribeye steak and chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$32</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Imperial</div><div class="item-desc">New York sirloin, shrimps and chicken dark meat glazed with teriyaki sauce</div></div><div class="item-price">$33</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Lobster &amp; Sirloin</div><div class="item-desc">Everyone's favourite</div></div><div class="item-price">$37</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Prime Ribeye Beef Roll</div><div class="item-desc">Thinly sliced prime ribeye beef, wrapped with fried garlic and green onion</div></div><div class="item-price">$30</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Shogayaki</div><div class="item-desc">Thinly sliced pork loin cooked with house ginger sauce</div></div><div class="item-price">$22</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tonkatsu</div><div class="item-desc">Deep-fried breaded pork cutlet served with tonkatsu sauce</div></div><div class="item-price">$22</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Atlantic Salmon</div><div class="item-desc">Char-broiled fresh Atlantic salmon fillet, salted or glazed with teriyaki sauce</div></div><div class="item-price">$27</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kaisen</div><div class="item-desc">Shrimps and scallops sautéed with garlic butter and soya sauce</div></div><div class="item-price">$30</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ebi</div><div class="item-desc">Shrimps sautéed with garlic butter and soya sauce</div></div><div class="item-price">$30</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Hotategai</div><div class="item-desc">Deep sea scallops sautéed with garlic butter and soya sauce</div></div><div class="item-price">$32</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Udon &amp; Soba</span></div>
+    <p class="menu-note">All udon &amp; soba served with house salad</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Nabeyaki Udon</div><div class="item-desc">Thick noodle with assorted vegetables, seafood &amp; egg cooked in broth</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tempura Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle in broth with tempura shrimp</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Beef Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle with sautéed beef &amp; vegetables in broth</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chicken Udon or Soba</div><div class="item-desc">Thick or buckwheat noodle with grilled chicken dark meat in broth</div></div><div class="item-price">$13</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ten Zaru Soba</div><div class="item-desc">Cold buckwheat noodle with tempura shrimps served with dipping sauce</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Zaru Soba</div><div class="item-desc">Cold buckwheat noodle served with dipping sauce</div></div><div class="item-price">$11</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Donburi</span></div>
+    <p class="menu-note">Served with miso soup &amp; salad</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Oyako-Don</div><div class="item-desc">Chicken dark meat, Spanish onion, shiitake mushroom and egg stewed in sauce, served on rice</div></div><div class="item-price">$15</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Katsu-Don</div><div class="item-desc">Deep-fried breaded pork cutlet, Spanish onion and egg stewed in sauce, served on rice</div></div><div class="item-price">$18</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ten-Don</div><div class="item-desc">Deep-fried tempura shrimps and vegetables dipped in house sauce, served on rice</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Una Jyu</div><div class="item-desc">Barbecued eel served on a bed of rice with Japanese pickles</div></div><div class="item-price">$24</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Nigiri Sushi</span></div>
+    <p class="menu-note">2 pieces · All nigiri prepared with wasabi inside · Extra pickled ginger $1 · House Sauce $1</p>
+    <div class="menu-items-compact">
+      <div class="menu-item-compact"><span><span class="mic-name">Sake</span><span class="mic-jp"> — Atlantic salmon</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Maguro</span><span class="mic-jp"> — Tuna</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Toro</span><span class="mic-jp"> — Bluefin marbled tuna</span></span><span class="mic-price">Market price</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Bincho</span><span class="mic-jp"> — White tuna</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Hamachi</span><span class="mic-jp"> — Yellowtail</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Saba</span><span class="mic-jp"> — Mackerel</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ebi</span><span class="mic-jp"> — Shrimp</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Amaebi</span><span class="mic-jp"> — Sweet shrimp</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Hotategai</span><span class="mic-jp"> — Scallop</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ika</span><span class="mic-jp"> — Squid</span></span><span class="mic-price">$6</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Tako</span><span class="mic-jp"> — Octopus</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Unagi</span><span class="mic-jp"> — Fresh water eel</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Tobiko</span><span class="mic-jp"> — Flying fish roe</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Ikura</span><span class="mic-jp"> — Salmon roe</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Uni</span><span class="mic-jp"> — Sea urchin</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Botan Ebi</span><span class="mic-jp"> — Large prawns</span></span><span class="mic-price">$11</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kampachi</span><span class="mic-jp"> — Amberjack</span></span><span class="mic-price">$9</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Madai</span><span class="mic-jp"> — Sea bream</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Aji</span><span class="mic-jp"> — Spanish mackerel</span></span><span class="mic-price">$7</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Shima Aji</span><span class="mic-jp"> — Stripe jack</span></span><span class="mic-price">$10</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Suzuki</span><span class="mic-jp"> — Sea bass</span></span><span class="mic-price">$8</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kinmedai</span><span class="mic-jp"> — Golden eye red snapper</span></span><span class="mic-price">$9</span></div>
+      <div class="menu-item-compact"><span><span class="mic-name">Kurodai</span><span class="mic-jp"> — Black porgy</span></span><span class="mic-price">$8</span></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Maki Sushi</span></div>
+    <p class="menu-note">Seaweed roll · Extra pickled ginger $1 · House Sauce $1</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tekka</div><div class="item-desc">Tuna</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kappa</div><div class="item-desc">Cucumber</div></div><div class="item-price">$5</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">California</div><div class="item-desc">Avocado, cucumber, fish roe &amp; surimi crab leg</div></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Tuna</div><div class="item-desc">Tuna, avocado &amp; spicy mayo</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Salmon</div><div class="item-desc">Salmon, avocado &amp; spicy mayo</div></div><div class="item-price">$9</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Scallop</div><div class="item-desc">Fresh scallop, fish roe, avocado &amp; spicy mayo</div></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Philadelphia Roll</div><div class="item-desc">Cucumber, Spanish onions and cream cheese topped with smoked salmon</div></div><div class="item-price">$11</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dragon Roll</div><div class="item-desc">Shrimp tempura, eel &amp; fish roe topped with sliced avocado</div></div><div class="item-price">$19</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dynamite Roll</div><div class="item-desc">Shrimp tempura, surimi crab leg, fish roe, cucumber &amp; avocado</div></div><div class="item-price">$14</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spider Roll</div><div class="item-desc">Soft-shell crab, fish roe, avocado, radish sprout, surimi crab &amp; cucumber</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Mountain Roll</div><div class="item-desc">Yellowtail tempura &amp; avocado topped with Spanish onion, fish roe and spicy mayo</div></div><div class="item-price">$17</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rainbow</div><div class="item-desc">Avocado, cucumber, surimi crab leg &amp; fish roe topped with assorted raw fish</div></div><div class="item-price">$17</div></div>
+    </div>
+
+    <div class="menu-section-header"><span class="menu-section-label">Temaki — Hand Rolls</span></div>
+    <p class="menu-note">Extra pickled ginger $1 · House Sauce $1</p>
+    <div class="menu-items">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tekka</div><div class="item-desc">Tuna</div></div><div class="item-price">$5</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">California</div><div class="item-desc">Avocado, cucumber, fish roe and surimi crab leg</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Tuna</div><div class="item-desc">Tuna, avocado &amp; spicy mayo</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spicy Salmon</div><div class="item-desc">Salmon, avocado &amp; spicy mayo</div></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Dynamite</div><div class="item-desc">Shrimp tempura, surimi crab leg, fish roe, cucumber &amp; avocado</div></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spider (2 pcs)</div><div class="item-desc">Soft-shell crab, fish roe, avocado, radish sprout, surimi crab &amp; cucumber</div></div><div class="item-price">$16</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Negi Toro</div><div class="item-desc">Chopped marbled tuna &amp; green onion</div></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Unakyu</div><div class="item-desc">Barbecued eel &amp; cucumber</div></div><div class="item-price">$6</div></div>
+    </div>
+
+  </div><!-- end dinner panel -->
+</div>
+
+<!-- ══════════════ LOCATION PAGE ══════════════ -->
+<div class="page" id="page-location">
+  <div class="location-grid">
+    <div class="location-info">
+      <p class="eyebrow">Find Us</p>
+      <h2 class="location-address">100 Simcoe Street<br>Toronto, ON M5H 3L2</h2>
+      <p class="location-phone">Reservations: <a href="tel:4165993868">(416) 599-3868</a><br>
+      <span style="font-size:0.82rem;color:var(--muted)">Fax: (416) 599-2080</span></p>
+
+      <table class="hours-table">
+        <tr><th colspan="2">Hours of Operation</th></tr>
+        <tr><td colspan="2" style="color:var(--gold);font-size:0.72rem;letter-spacing:0.15em;padding-top:1rem">LUNCH</td></tr>
+        <tr><td>Monday – Friday</td><td>Open 11:30 am</td></tr>
+        <tr><td>Saturday, Sunday &amp; Holidays</td><td>Closed</td></tr>
+        <tr><td colspan="2" style="color:var(--gold);font-size:0.72rem;letter-spacing:0.15em;padding-top:1rem">DINNER</td></tr>
+        <tr><td>Sunday – Thursday &amp; Holidays</td><td>Open 5:00 pm</td></tr>
+        <tr><td>Friday &amp; Saturday</td><td>Open 5:00 pm</td></tr>
+      </table>
+
+      <div class="payment-label">Accepted Payment Methods</div>
+      <div class="payment-badges">
+        <span class="badge">Visa</span>
+        <span class="badge">Mastercard</span>
+        <span class="badge">Amex</span>
+        <span class="badge">Discover</span>
+        <span class="badge">Diners Club</span>
+        <span class="badge">JCB</span>
+        <span class="badge">Traveler's Cheques</span>
+        <span class="badge">Cash</span>
+      </div>
+    </div>
+    <div class="location-map">
+      <iframe
+        src="https://maps.google.com/maps?q=100+Simcoe+Street,+Toronto,+ON&output=embed"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Fune Restaurant Location">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>F</span>UNE</div>
+  <div class="footer-tagline">Japanese Restaurant · Toronto</div>
+  <div class="footer-divider"></div>
+  <div class="footer-text">
+    100 Simcoe St., Toronto, ON M5H 3L2<br>
+    Tel: (416) 599-3868 · Fax: (416) 599-2080<br><br>
+    © FUNE Japanese Restaurant
+  </div>
+</footer>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function switchMenuTab(tab) {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  function toggleMobile() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  function closeMobile() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+</script>
+</body>
+</html>

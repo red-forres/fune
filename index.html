@@ -47,7 +47,7 @@
     color: var(--offwhite); text-decoration: none;
     display: flex; align-items: center; gap: 0.5rem;
   }
-  .nav-logo span { color: var(--crimson); }
+  .nav-logo::first-letter { color: var(--crimson); }
 
   .nav-links {
     display: flex; gap: 2rem; list-style: none;
@@ -446,7 +446,7 @@
     font-size: 2rem; letter-spacing: 0.25em; color: var(--offwhite);
     margin-bottom: 0.5rem;
   }
-  .footer-logo span { color: var(--crimson); }
+  .footer-logo::first-letter { color: var(--crimson); }
   .footer-tagline { font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 2rem; }
   .footer-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.15); margin: 1.5rem auto; }
   .footer-text { font-size: 0.78rem; line-height: 2; }
@@ -493,7 +493,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" onclick="showPage('home')"><span>F</span>UNÉ</a>
+  <a class="nav-logo" onclick="showPage('home')">FUNÉ</a>
   <ul class="nav-links">
     <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
     <li><a onclick="showPage('about')" id="nav-about">About Us</a></li>
@@ -1038,7 +1038,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><span>F</span>UNÉ</div>
+  <div class="footer-logo">FUNÉ</div>
   <div class="footer-tagline">Japanese Restaurant · Toronto</div>
   <div class="footer-divider"></div>
   <div class="footer-text">
